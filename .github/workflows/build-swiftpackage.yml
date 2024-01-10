@@ -1,0 +1,80 @@
+# Trigger on every tag creation
+on:
+  push:
+    tags:
+      - 'release-*'
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-13
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+#      - uses: ./.github/actions/xcode-select
+#      - name: Select Xcode
+#        run: sudo xcode-select -switch /Applications/Xcode_15.1.app
+##        run: sudo xcode-select -switch /Applications/Xcode.app
+
+#      - uses: ./.github/actions/setup-java
+
+#      - name: Build with Gradle
+#        run: ./gradlew :api-ios:assembleRivalShotApiReleaseXCFramework
+#        env:
+#          GB_TOKEN: ${{ secrets.GB_TOKEN }}
+#          GB_USERNAME: ${{ secrets.GB_USERNAME }}
+#
+#      - name: Prepare XCFrameworks
+#        run: |
+#          set -x
+#
+#          RELEASE_DIR="${{ github.workspace }}/api-ios/build/XCFrameworks/release/"
+#
+#          function copyXCFramework {
+#            cp -rf $1 $2
+#          }
+#
+#          copyXCFramework ${{ github.workspace }}/api-ios/build/XCFrameworks/release/ ${{ github.workspace }}/swiftpackage
+      - name: Upload Swift Package directory
+        uses: actions/upload-artifact@v2
+        with:
+          name: swiftpackage
+          path: swiftpackage
+          retention-days: 1
+  push:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Download directory with swift package
+        uses: actions/download-artifact@v4
+        with:
+          name: swiftpackage
+#          path: swiftpackage
+      - name: Display structure of downloaded files
+        run: ls -R
+#      - name: Access tag name of current workflow
+#        run: echo "TAG=${GITHUB_REF/refs\/tags\//}" >> $GITHUB_ENV
+#      - name: Create release branch on package repo
+#        uses: GuillaumeFalourd/create-other-repo-branch-action@v1
+#        with:
+#          repository_owner: VisionLab-de
+#          repository_name: RivalShotIOSPackage
+#          new_branch_name: ${{ env.TAG }}
+#          access_token: ${{ secrets.GB_TOKEN}}
+#      - name: Push directory to another repository
+#        uses: cpina/github-action-push-to-another-repository@main
+#        env:
+#          API_TOKEN_GITHUB: ${{ secrets.GB_TOKEN }}
+#        with:
+#          source-directory: 'swiftpackage'
+#          destination-github-username: 'VisionLab-de'
+#          destination-repository-name: 'RivalShotIOSPackage'
+#          user-email: bjoern.wedler@visionlab.de
+#          target-branch: ${{ env.TAG }}
+
