@@ -59,7 +59,7 @@ jobs:
       - name: Display structure of downloaded files
         run: ls -R
       - name: Access tag name of current workflow
-       run: echo "TAG=${GITHUB_REF/refs\/tags\//}" >> $GITHUB_ENV
+        run: echo "TAG=${GITHUB_REF/refs\/tags\//}" >> $GITHUB_ENV
       - name: Create release branch on package repo
         uses: GuillaumeFalourd/create-other-repo-branch-action@v1.5
         with:
