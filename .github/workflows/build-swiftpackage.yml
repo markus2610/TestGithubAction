@@ -58,23 +58,23 @@ jobs:
           path: swiftpackage
       - name: Display structure of downloaded files
         run: ls -R
-#      - name: Access tag name of current workflow
-#        run: echo "TAG=${GITHUB_REF/refs\/tags\//}" >> $GITHUB_ENV
-#      - name: Create release branch on package repo
-#        uses: GuillaumeFalourd/create-other-repo-branch-action@v1
-#        with:
-#          repository_owner: VisionLab-de
-#          repository_name: RivalShotIOSPackage
-#          new_branch_name: ${{ env.TAG }}
-#          access_token: ${{ secrets.GB_TOKEN}}
-#      - name: Push directory to another repository
-#        uses: cpina/github-action-push-to-another-repository@main
-#        env:
-#          API_TOKEN_GITHUB: ${{ secrets.GB_TOKEN }}
-#        with:
-#          source-directory: 'swiftpackage'
-#          destination-github-username: 'VisionLab-de'
-#          destination-repository-name: 'RivalShotIOSPackage'
-#          user-email: bjoern.wedler@visionlab.de
-#          target-branch: ${{ env.TAG }}
+      - name: Access tag name of current workflow
+       run: echo "TAG=${GITHUB_REF/refs\/tags\//}" >> $GITHUB_ENV
+      - name: Create release branch on package repo
+        uses: GuillaumeFalourd/create-other-repo-branch-action@v1.5
+        with:
+          repository_owner: VisionLab-de
+          repository_name: RivalShotIOSPackage
+          new_branch_name: ${{ env.TAG }}
+          access_token: ${{ secrets.GB_TOKEN}}
+      - name: Push directory to another repository
+        uses: cpina/github-action-push-to-another-repository@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.GB_TOKEN }}
+        with:
+          source-directory: 'swiftpackage'
+          destination-github-username: 'VisionLab-de'
+          destination-repository-name: 'RivalShotIOSPackage'
+          user-email: bjoern.wedler@visionlab.de
+          target-branch: ${{ env.TAG }}
 
