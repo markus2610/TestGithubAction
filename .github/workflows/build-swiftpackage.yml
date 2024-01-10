@@ -40,7 +40,7 @@ jobs:
 #
 #          copyXCFramework ${{ github.workspace }}/api-ios/build/XCFrameworks/release/ ${{ github.workspace }}/swiftpackage
       - name: Upload Swift Package directory
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: swiftpackage
           path: swiftpackage
@@ -55,7 +55,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: swiftpackage
-#          path: swiftpackage
+          path: swiftpackage
       - name: Display structure of downloaded files
         run: ls -R
 #      - name: Access tag name of current workflow
